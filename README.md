@@ -14,7 +14,7 @@ Only one musician plays at a time, and the state is synchronised by the server t
 
 ## Installation
 
-Add `moro_piano` to your `server.cfg` or `resources.cfg` file.
+Add `moro_orchestra` to your `server.cfg` or `resources.cfg` file.
 
 ## Config
 
