@@ -33,7 +33,7 @@ Add `moro_orchestra` to your `server.cfg` or `resources.cfg` file.
 - `scenario` is the scenario played while playing music.
 - `idleScenario` is the scenario played while not playing (optional).
 - `position` is the ped position and heading (`vector4`), used as is when there are no props.
-- `props` is an optional list of `{ model, offset }`: the ped is placed on the closest matching prop, `offset` is a `vector4` (x, y, z, heading). If no prop is found, the musician doesn't spawn.
+- `props` is an optional list of `{ model, offset }`: the ped is placed on the closest matching prop, `offset` is a `vector4` (x, y, z, heading).
 
 License: Licence MIT
 Feel free to use, modify & improve it freely, provided the original author (Morojgovany) is explicitly mentioned.
