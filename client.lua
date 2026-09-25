@@ -237,17 +237,24 @@ Citizen.CreateThread(function()
         if hasActiveMusician then
             local playerPed = PlayerPedId()
             local playerCoords = GetEntityCoords(playerPed)
+            local closestGroup, closestIndex, closestDistance = nil, nil, Config.PromptDistance
 
             for group, groupMusicians in pairs(musicians) do
                 for index, musician in pairs(groupMusicians) do
-                    if #(playerCoords - musician.coords) <= Config.PromptDistance and canInteract(playerPed) then
-                        PromptSetActiveGroupThisFrame(musician.promptGroup, CreateVarString(10, 'LITERAL_STRING', Config.Musicians[group][index].label))
-
-                        if PromptHasStandardModeCompleted(musician.prompt) then
-                            TriggerServerEvent('moro_piano:toggle', group, index)
-                            Wait(Config.ToggleCooldown)
-                        end
+                    local distance = #(playerCoords - musician.coords)
+                    if distance <= closestDistance then
+                        closestGroup, closestIndex, closestDistance = group, index, distance
                     end
+                end
+            end
+
+            if closestGroup and canInteract(playerPed) then
+                local musician = musicians[closestGroup][closestIndex]
+                PromptSetActiveGroupThisFrame(musician.promptGroup, CreateVarString(10, 'LITERAL_STRING', Config.Musicians[closestGroup][closestIndex].label))
+
+                if PromptHasStandardModeCompleted(musician.prompt) then
+                    TriggerServerEvent('moro_piano:toggle', closestGroup, closestIndex)
+                    Wait(Config.ToggleCooldown)
                 end
             end
         end

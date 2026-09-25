@@ -3,7 +3,7 @@ Config.PropSearchRadius = 2.0
 Config.ActivationDistance = 60.0
 Config.PromptDistance = 1.5
 Config.DefaultMusicians = {
-    ['guarma'] = 1,
+    ['group1'] = 1,
 }
 Config.PromptKey = 0x760A9C6F -- G
 Config.LoadTimeout = 5000

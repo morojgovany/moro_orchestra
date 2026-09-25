@@ -3,7 +3,7 @@ Standalone musicians script for RedM.
 
 Spawns musician NPCs at configured positions (piano, guitar, fiddle, jaw harp, trumpet...).  
 Players can walk up to a musician and press a key to make them start or stop playing.  
-Only one musician plays at a time, and the state is synchronised by the server to all players.
+Musicians are organised in groups: only one musician per group plays at a time, and the state is synchronised by the server to all players.
 
 ## Features
 
@@ -21,13 +21,13 @@ Add `moro_orchestra` to your `server.cfg` or `resources.cfg` file.
 `PropSearchRadius` is the radius used to find the prop the musician sits on.  
 `ActivationDistance` is the distance at which musicians spawn/despawn around the player.  
 `PromptDistance` is the distance at which the prompt appears.  
-`DefaultMusician` is the index of the musician playing when the server starts (`nil` = nobody).  
+`DefaultMusicians` is the table of musicians playing when the server starts, `['group'] = index` (groups not listed = nobody).  
 `PromptKey` is the key used to toggle the music (Default = G).  
 `LoadTimeout` is the max time (ms) to wait for a model or ped to load.  
 `SpawnCheckInterval` is the delay (ms) between distance checks to spawn/despawn musicians.  
 `ToggleCooldown` is the delay (ms) after a toggle before the prompt can be used again.  
 `Texts` is the table of prompts texts, use your own language.  
-`Musicians` is the list of musicians:
+`Musicians` is the table of groups, each group being a list of musicians:
 - `label` is the prompt group name.
 - `model` is the ped model. 
 - `scenario` is the scenario played while playing music.
