@@ -64,27 +64,39 @@ Config.Musicians = {
         model = 'u_m_m_nbxmusician_01',
         scenario = 'PROP_HUMAN_SEAT_BENCH_MANDOLIN',
         idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
-        position = vector4(0.0, 0.0, 0.0, 0.0),
+        position = vector4(1463.8160400390625, -7117.4287109375, 78.15289306640625, 20.0),
+        props = {
+            { model = 'p_chair11x', offset = vector4(0.0, 0.0, 0.5, 180.0) },
+        }
     },
     {
         label = 'Concertina',
         model = 'u_m_m_nbxmusician_01',
         scenario = 'PROP_HUMAN_SEAT_BENCH_CONCERTINA',
         idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
-        position = vector4(0.0, 0.0, 0.0, 0.0),
+        position = vector4(1457.12, -7120.53, 78.15, 225.01),
+        props = {
+            { model = 'p_chair09x', offset = vector4(0.0, 0.0, 0.5, 180.0) },
+        }
     },
     {
         label = 'Banjo',
         model = 'u_m_m_nbxmusician_01',
         scenario = 'PROP_HUMAN_SEAT_CHAIR_BANJO',
         idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
-        position = vector4(0.0, 0.0, 0.0, 0.0),
+        position = vector4(1462.2579345703125, -7118.908203125, 77.15290069580078, 0.0),
+        props = {
+            { model = 'p_chair18x', offset = vector4(0.0, 0.0, 0.5, 180.0) },
+        }
     },
     {
         label = 'Harmonica',
         model = 'u_m_m_nbxmusician_01',
         scenario = 'PROP_HUMAN_SEAT_BENCH_HARMONICA',
         idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
-        position = vector4(0.0, 0.0, 0.0, 0.0),
+        position = vector4(1462.4373779296875, -7119.3984375, 76.23394012451172, 20.0),
+        props = {
+            { model = 'p_chair16x', offset = vector4(0.0, 0.0, 0.5, 180.0) },
+        }
     },
 }
