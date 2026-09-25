@@ -1,7 +1,16 @@
-local playing = Config.DefaultMusician
+local playing = {}
 
-local function isPlayerNear(_source, index)
-    local musician = Config.Musicians[index]
+for group, index in pairs(Config.DefaultMusicians) do
+    playing[group] = index
+end
+
+local function isPlayerNear(_source, group, index)
+    local musicians = Config.Musicians[group]
+    if not musicians then
+        return false
+    end
+
+    local musician = musicians[index]
     if not musician then
         return false
     end
@@ -18,21 +27,25 @@ end
 
 RegisterNetEvent('moro_piano:requestState')
 AddEventHandler('moro_piano:requestState', function()
-    TriggerClientEvent('moro_piano:syncState', source, playing)
+    local _source = source
+
+    for group in pairs(Config.Musicians) do
+        TriggerClientEvent('moro_piano:syncState', _source, group, playing[group])
+    end
 end)
 
 RegisterNetEvent('moro_piano:toggle')
-AddEventHandler('moro_piano:toggle', function(index)
+AddEventHandler('moro_piano:toggle', function(group, index)
     local _source = source
-    if not isPlayerNear(_source, index) then
+    if not isPlayerNear(_source, group, index) then
         return
     end
 
-    if playing == index then
-        playing = nil
+    if playing[group] == index then
+        playing[group] = nil
     else
-        playing = index
+        playing[group] = index
     end
 
-    TriggerClientEvent('moro_piano:syncState', -1, playing)
+    TriggerClientEvent('moro_piano:syncState', -1, group, playing[group])
 end)

@@ -1,5 +1,5 @@
 local musicians = {}
-local playing = nil
+local playing = {}
 
 local function loadModel(model)
     local hash = joaat(model)
@@ -81,17 +81,22 @@ local function canInteract(playerPed)
             and not IsPedInMeleeCombat(playerPed)
 end
 
-local function refreshMusician(index)
-    local musician = musicians[index]
+local function refreshMusician(group, index)
+    local groupMusicians = musicians[group]
+    if not groupMusicians then
+        return
+    end
+
+    local musician = groupMusicians[index]
     if not musician then
         return
     end
 
-    local config = Config.Musicians[index]
+    local config = Config.Musicians[group][index]
     local scenario = config.idleScenario
     local label = Config.Texts.start
 
-    if playing == index then
+    if playing[group] == index then
         scenario = config.scenario
         label = Config.Texts.stop
     end
@@ -107,8 +112,8 @@ local function refreshMusician(index)
     PromptSetText(musician.prompt, CreateVarString(10, 'LITERAL_STRING', label))
 end
 
-local function spawnMusician(index)
-    local config = Config.Musicians[index]
+local function spawnMusician(group, index)
+    local config = Config.Musicians[group][index]
     local coords, heading = getPlacement(config)
     if not coords then
         return nil
@@ -146,8 +151,13 @@ local function spawnMusician(index)
     }
 end
 
-local function despawnMusician(index)
-    local musician = musicians[index]
+local function despawnMusician(group, index)
+    local groupMusicians = musicians[group]
+    if not groupMusicians then
+        return
+    end
+
+    local musician = groupMusicians[index]
     if not musician then
         return
     end
@@ -161,24 +171,28 @@ local function despawnMusician(index)
         PromptDelete(musician.prompt)
     end
 
-    musicians[index] = nil
+    groupMusicians[index] = nil
+
+    if next(groupMusicians) == nil then
+        musicians[group] = nil
+    end
 end
 
 RegisterNetEvent('moro_piano:syncState')
-AddEventHandler('moro_piano:syncState', function(index)
-    local previous = playing
-    playing = index
+AddEventHandler('moro_piano:syncState', function(group, index)
+    local previous = playing[group]
+    playing[group] = index
 
     if previous == index then
         return
     end
 
     if previous then
-        refreshMusician(previous)
+        refreshMusician(group, previous)
     end
 
     if index then
-        refreshMusician(index)
+        refreshMusician(group, index)
     end
 end)
 
@@ -193,21 +207,24 @@ Citizen.CreateThread(function()
         Wait(Config.SpawnCheckInterval)
         local playerCoords = GetEntityCoords(PlayerPedId())
 
-        for index, config in ipairs(Config.Musicians) do
-            local distance = #(playerCoords - vector3(config.position.x, config.position.y, config.position.z))
-            local musician = musicians[index]
+        for group, groupConfig in pairs(Config.Musicians) do
+            for index, config in ipairs(groupConfig) do
+                local distance = #(playerCoords - vector3(config.position.x, config.position.y, config.position.z))
+                local musician = musicians[group] and musicians[group][index]
 
-            if distance <= Config.ActivationDistance then
-                if not musician then
-                    local spawned = spawnMusician(index)
-                    if spawned then
-                        spawned.prompt = createPrompt(spawned.promptGroup, Config.Texts.start)
-                        musicians[index] = spawned
-                        refreshMusician(index)
+                if distance <= Config.ActivationDistance then
+                    if not musician then
+                        local spawned = spawnMusician(group, index)
+                        if spawned then
+                            spawned.prompt = createPrompt(spawned.promptGroup, Config.Texts.start)
+                            musicians[group] = musicians[group] or {}
+                            musicians[group][index] = spawned
+                            refreshMusician(group, index)
+                        end
                     end
+                elseif musician then
+                    despawnMusician(group, index)
                 end
-            elseif musician then
-                despawnMusician(index)
             end
         end
     end
@@ -221,13 +238,15 @@ Citizen.CreateThread(function()
             local playerPed = PlayerPedId()
             local playerCoords = GetEntityCoords(playerPed)
 
-            for index, musician in pairs(musicians) do
-                if #(playerCoords - musician.coords) <= Config.PromptDistance and canInteract(playerPed) then
-                    PromptSetActiveGroupThisFrame(musician.promptGroup, CreateVarString(10, 'LITERAL_STRING', Config.Musicians[index].label))
+            for group, groupMusicians in pairs(musicians) do
+                for index, musician in pairs(groupMusicians) do
+                    if #(playerCoords - musician.coords) <= Config.PromptDistance and canInteract(playerPed) then
+                        PromptSetActiveGroupThisFrame(musician.promptGroup, CreateVarString(10, 'LITERAL_STRING', Config.Musicians[group][index].label))
 
-                    if PromptHasStandardModeCompleted(musician.prompt) then
-                        TriggerServerEvent('moro_piano:toggle', index)
-                        Wait(Config.ToggleCooldown)
+                        if PromptHasStandardModeCompleted(musician.prompt) then
+                            TriggerServerEvent('moro_piano:toggle', group, index)
+                            Wait(Config.ToggleCooldown)
+                        end
                     end
                 end
             end
@@ -239,8 +258,10 @@ end)
 
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
-        for index in pairs(musicians) do
-            despawnMusician(index)
+        for group, groupMusicians in pairs(musicians) do
+            for index in pairs(groupMusicians) do
+                despawnMusician(group, index)
+            end
         end
     end
 end)
