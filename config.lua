@@ -8,12 +8,12 @@ Config.LoadTimeout = 5000
 Config.SpawnCheckInterval = 1000
 Config.ToggleCooldown = 300
 Config.Texts = {
-    start = 'Start playing',
-    stop = 'Stop playing',
+    start = 'Commencer à jouer',
+    stop = 'Arrêter de jouer',
 }
 Config.Musicians = {
     {
-        label = 'Piano',
+        label = 'Pianiste',
         model = 'u_m_m_galastringquartet_01',
         scenario = 'PROP_HUMAN_PIANO',
         idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
@@ -23,7 +23,7 @@ Config.Musicians = {
         }
     },
     {
-        label = 'Guitar',
+        label = 'Guitariste',
         model = 'u_m_m_nbxmusician_01', -- males only
         scenario = 'PROP_HUMAN_SEAT_CHAIR_GUITAR',
         idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
@@ -33,7 +33,7 @@ Config.Musicians = {
         }
     },
     {
-        label = 'Fiddle',
+        label = 'Violoniste',
         model = 'msp_saintdenis1_females_01', --females only
         scenario = 'PROP_HUMAN_SEAT_BENCH_FIDDLE',
         idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
@@ -43,7 +43,7 @@ Config.Musicians = {
         }
     },
     {
-        label = 'Jawharp',
+        label = 'Guimbarde',
         model = 'a_m_m_valfarmer_01', --males only
         scenario = 'PROP_HUMAN_SEAT_BENCH_JAW_HARP',
         idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
@@ -53,10 +53,38 @@ Config.Musicians = {
         }
     },
     {
-        label = 'Trumpet',
+        label = 'Trompette',
         model = 'a_m_m_nbxupperclass_01', --males only
         scenario = 'WORLD_HUMAN_TRUMPET',
         idleScenario = 'WORLD_HUMAN_SMOKE_CIGAR',
         position = vector4(1462.1256103515625, -7122.29296875, 77.2328872680664, 40.0),
+    },
+    {
+        label = 'Mandoline',
+        model = 'u_m_m_nbxmusician_01',
+        scenario = 'PROP_HUMAN_SEAT_BENCH_MANDOLIN',
+        idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
+        position = vector4(0.0, 0.0, 0.0, 0.0),
+    },
+    {
+        label = 'Concertina',
+        model = 'u_m_m_nbxmusician_01',
+        scenario = 'PROP_HUMAN_SEAT_BENCH_CONCERTINA',
+        idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
+        position = vector4(0.0, 0.0, 0.0, 0.0),
+    },
+    {
+        label = 'Banjo',
+        model = 'u_m_m_nbxmusician_01',
+        scenario = 'PROP_HUMAN_SEAT_CHAIR_BANJO',
+        idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
+        position = vector4(0.0, 0.0, 0.0, 0.0),
+    },
+    {
+        label = 'Harmonica',
+        model = 'u_m_m_nbxmusician_01',
+        scenario = 'PROP_HUMAN_SEAT_BENCH_HARMONICA',
+        idleScenario = 'PROP_HUMAN_SEAT_CHAIR',
+        position = vector4(0.0, 0.0, 0.0, 0.0),
     },
 }
