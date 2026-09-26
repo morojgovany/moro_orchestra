@@ -25,17 +25,17 @@ local function isPlayerNear(_source, group, index)
     return distance <= (Config.PropSearchRadius + Config.PromptDistance)
 end
 
-RegisterNetEvent('moro_piano:requestState')
-AddEventHandler('moro_piano:requestState', function()
+RegisterNetEvent('moro_orchestra:requestState')
+AddEventHandler('moro_orchestra:requestState', function()
     local _source = source
 
     for group in pairs(Config.Musicians) do
-        TriggerClientEvent('moro_piano:syncState', _source, group, playing[group])
+        TriggerClientEvent('moro_orchestra:syncState', _source, group, playing[group])
     end
 end)
 
-RegisterNetEvent('moro_piano:toggle')
-AddEventHandler('moro_piano:toggle', function(group, index)
+RegisterNetEvent('moro_orchestra:toggle')
+AddEventHandler('moro_orchestra:toggle', function(group, index)
     local _source = source
     if not isPlayerNear(_source, group, index) then
         return
@@ -47,5 +47,5 @@ AddEventHandler('moro_piano:toggle', function(group, index)
         playing[group] = index
     end
 
-    TriggerClientEvent('moro_piano:syncState', -1, group, playing[group])
+    TriggerClientEvent('moro_orchestra:syncState', -1, group, playing[group])
 end)

@@ -4,7 +4,7 @@ local playing = {}
 local function loadModel(model)
     local hash = joaat(model)
     if not IsModelInCdimage(hash) then
-        print(('moro_piano: invalid ped model %s'):format(model))
+        print(('moro_orchestra: invalid ped model %s'):format(model))
         return nil
     end
 
@@ -178,8 +178,8 @@ local function despawnMusician(group, index)
     end
 end
 
-RegisterNetEvent('moro_piano:syncState')
-AddEventHandler('moro_piano:syncState', function(group, index)
+RegisterNetEvent('moro_orchestra:syncState')
+AddEventHandler('moro_orchestra:syncState', function(group, index)
     local previous = playing[group]
     playing[group] = index
 
@@ -201,7 +201,7 @@ Citizen.CreateThread(function()
         repeat Wait(500) until not IsLoadingScreenVisible() and not IsScreenFadedOut()
     end
 
-    TriggerServerEvent('moro_piano:requestState')
+    TriggerServerEvent('moro_orchestra:requestState')
 
     while true do
         Wait(Config.SpawnCheckInterval)
@@ -253,7 +253,7 @@ Citizen.CreateThread(function()
                 PromptSetActiveGroupThisFrame(musician.promptGroup, CreateVarString(10, 'LITERAL_STRING', Config.Musicians[closestGroup][closestIndex].label))
 
                 if PromptHasStandardModeCompleted(musician.prompt) then
-                    TriggerServerEvent('moro_piano:toggle', closestGroup, closestIndex)
+                    TriggerServerEvent('moro_orchestra:toggle', closestGroup, closestIndex)
                     Wait(Config.ToggleCooldown)
                 end
             end
